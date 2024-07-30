@@ -1,0 +1,65 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather and Outfit Suggestions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        // Function to fetch current location using HTML5 Geolocation API
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Callback function to handle current position
+        function showPosition(position) {
+<!--            document.getElementById('location').value = `Lat: ${position.coords.latitude}, Long: ${position.coords.longitude}`;-->
+            document.getElementById('location').value = `${position.coords.latitude},  ${position.coords.longitude}`;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather and Outfit Suggestions</h1>
+        <form action="/" method="post">
+
+            <label for="location">Location:</label>
+
+              <input type="text" id="location" name="location" placeholder="Enter location" required>
+            <p class="or-center">Or</p>
+              <button type="button" onclick="getCurrentLocation()">
+                 Get Current Location
+              </button>
+
+
+            <br>
+            <label for="style">Preferred Style:</label>
+            <select id="style" name="style">
+                <option value="casual">Casual</option>
+                <option value="formal">Formal</option>
+                <option value="other">Other</option>
+            </select>
+            <br>
+            <button type="submit">Fetch Weather</button>
+        </form>
+
+        {% if weather_data %}
+        <div class="weather-info">
+            <p><strong>Location:</strong> {{ location }}</p>
+            <p><strong>Temperature:</strong> {{ weather_data.temperature }}°C</p>
+            <p><strong>Description:</strong> {{ weather_data.description }}</p>
+            <p><strong>Outfit Suggestion:</strong> {{ outfit_suggestion }}</p>
+            <p><strong>Purchase Suggestion:</strong> {{ purchase_suggestion }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
